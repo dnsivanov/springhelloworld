@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.springboothelloweb</groupId>
+    <artifactId>springhellowweb</artifactId>
+    <version>0.0.1</version>
+    <packaging>jar</packaging>
+ 
+
+    <name>Spring Boot Blank Project (from https://github.com/making/spring-boot-blank)</name>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.2.7.RELEASE</version>
+    </parent>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <start-class>com.springboothelloweb.App</start-class>
+        <java.version>1.8</java.version>
+        <lombok.version>1.14.8</lombok.version>
+        <log4jdbc.log4j2.version>1.16</log4jdbc.log4j2.version>
+        <rest.assured.version>2.3.3</rest.assured.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.bgee.log4jdbc-log4j2</groupId>
+            <artifactId>log4jdbc-log4j2-jdbc4.1</artifactId>
+            <version>${log4jdbc.log4j2.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.jayway.restassured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>${rest.assured.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+
+<plugin>
+  <groupId>io.fabric8</groupId>
+  <artifactId>docker-maven-plugin</artifactId>
+  <version>0.43.4</version>
+
+  <configuration>
+     <dockerHost>http://192.168.122.2:2375</dockerHost>     
+     <images>        
+        <image>
+             <name>%g/springhellowweb:0.0.1</name>
+        </image>
+     </images>
+  </configuration>
+
+  <!-- Connect start/stop to pre- and
+       post-integration-test phase, respectively if you want to start
+       your docker containers during integration tests -->
+  <executions>
+    <execution>
+       <id>start</id>
+       <phase>pre-integration-test</phase>
+       <goals>
+         <!-- "build" should be used to create the images with the
+              artifact -->
+         <goal>build</goal>
+         <goal>start</goal>
+       </goals>
+    </execution>
+    <execution>
+       <id>stop</id>
+       <phase>post-integration-test</phase>
+       <goals>
+         <goal>stop</goal>
+      </goals>
+    </execution>
+  </executions>
+</plugin>
+
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>springloaded</artifactId>
+                        <version>${spring-loaded.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
